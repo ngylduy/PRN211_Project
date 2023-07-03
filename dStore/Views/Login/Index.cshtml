@@ -1,0 +1,46 @@
+﻿@model BusinessObject.Member
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="login-bg">
+    <div class="login-form-area">
+        <div class="login-form">
+            <div class="login-heading">
+                <span>Login</span>
+                <p>Enter Login details to get access</p>
+            </div>
+            <form method="POST" action="Login">
+                @Html.AntiForgeryToken()
+                <div class="input-box">
+                    <div class="single-input-fields">
+                        <label>Username</label>
+                        <input id="username" name="username" type="text" value="@ViewBag.Username" placeholder="Username">
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Password</label>
+                        <input id="password" name="password" type="password" placeholder="Enter Password">
+                    </div>
+                    <div class="single-input-fields login-check">
+                        <a asp-controller="ForgotPass" asp-action="Index" class="f-right">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="login-footer">
+                    <p>Don’t have an account? <a asp-controller="Signup" asp-action="Index">Sign Up</a> here</p>
+                    <button type="submit" value="Login" class="submit-btn3">Login</button>
+                </div>
+            </form>
+            @if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <p class="alert alert-danger" role="alert">@ViewBag.Message</p>
+            }
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

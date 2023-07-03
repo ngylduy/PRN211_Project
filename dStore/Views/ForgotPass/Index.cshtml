@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="login-bg">
+    <div class="login-form-area">
+        <div class="login-form">
+            <div class="login-heading">
+                <span>Login</span>
+                <p>Enter Login details to get access</p>
+            </div>
+            <form method="POST" action="ForgotPass">
+                @Html.AntiForgeryToken()
+                <div class="input-box">
+                    <div class="single-input-fields">
+                        <label>Email Address</label>
+                        <input id="email" name="email" type="email" class="form-control" placeholder="Email"/>
+                    </div>
+                </div>
+                <div class="login-footer">
+                    <p><a asp-controller="Login" asp-action="Index">Back to login</a></p>
+                    <button type="submit" value="Login" class="submit-btn3">Send</button>
+                </div>
+            </form>
+            @if (!string.IsNullOrEmpty(ViewBag.Message))
+            {
+                <p class="alert alert-danger" role="alert">@ViewBag.Message</p>
+            }
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Not Found";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid error404">
+    <!-- 404 Error Text -->
+    <div class="text-center">
+        <h1 class="error mx-auto" data-text="404">404</h1>
+        <p class="lead text-gray-800 mb-3">Page Not Found</p>
+        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+        <a asp-controller="Home" asp-action="Index">Back to Homepage</a>
+    </div>
+</div>

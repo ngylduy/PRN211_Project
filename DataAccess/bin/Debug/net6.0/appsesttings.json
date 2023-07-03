@@ -1,0 +1,19 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "account": {
+    "defaultAccount": {
+      "email": "admin@dstore.com",
+      "password": "admin@@"
+    }
+  },
+  "ConnectionStrings": {
+    "MyStoreDB": "server=(local);database=FStore;uid=sa;pwd=123123;TrustServerCertificate=True"
+  }
+}

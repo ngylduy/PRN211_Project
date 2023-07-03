@@ -1,0 +1,83 @@
+﻿@model BusinessObject.Member
+
+@{
+    ViewData["Title"] = "Sign up";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<main class="login-bg">
+    <div class="register-form-area">
+        <div class="register-form text-center">
+            <div class="register-heading">
+                <span>Sign Up</span>
+                <p>Create your account to get full access</p>
+            </div>
+            <form asp-action="Create">
+            <div class="input-box">
+                <div class="single-input-fields">
+                    <label asp-for="Fullname"></label>
+                    <input asp-for="Fullname" type="text" placeholder="Enter full name"required />
+                    <span asp-validation-for="Fullname" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" type="email" placeholder="Email" required />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" type="tel" placeholder="Phone" required />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                    <label asp-for="Address"></label>
+                    <input asp-for="Address" type="text" placeholder="Address" required />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                    <label asp-for="City"></label>
+                    <input asp-for="City" type="text" placeholder="City" required />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                    <div class="single-input-fields">
+                    <label asp-for="Country"></label>
+                    <input asp-for="Country" type="text" placeholder="Country" required />
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                        <label asp-for="Username"></label>
+                    <input asp-for="Username" type="text" placeholder="Username" required />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" type="password" placeholder="Password" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="single-input-fields">
+                    <label for="Confirm">Confirm Password</label>
+                        <input id="Confirm" name="Confirm" placeholder="Confirm Password" type="password" required />
+                </div>
+            </div>
+            <div class="register-footer">
+                <p> Already have an account? <a href="/Login"> Login</a> here</p>
+                <button type="submit" value="Create" class="submit-btn3">Sign Up</button>
+            </div>
+            </form>
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
+        </div>
+    </div>
+</main>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
