@@ -5,118 +5,106 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="mt-3">Update your Profile</h1>
-<hr />
-@if (!string.IsNullOrEmpty(ViewBag.Error))
-{
-    <div class="alert alert-danger" role="alert">
-        @ViewBag.Error
-    </div>
-}
-else if (!string.IsNullOrEmpty(ViewBag.Success))
-{
-    <div class="alert alert-success" role="alert">
-        @ViewBag.Success
-    </div>
-}
-<div class="row">
-    <div class="">
-        <div class="content" style="margin-top: 50px;">
-            <section style=" min-height: 100vh; max-height: fit-content;">
-                <div class="container py-5 ">
-
-                    <div class="row d-flex justify-content-evenly">
-                        <div class="col-md-3 border-right card" style=" border-radius: 15px; overflow: hidden;">
-                            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                                <p id="msg-error" style="display: none;">Your upload file must less than 5MB</p>
-                                <label for="uploadImgProfile" id="change-img-profile" style="cursor: pointer;width: 150px; height: 150px; overflow: hidden;" class="rounded-circle mt-5 position-relative">
-                                    <div id="profile-img" style="
-                                         width: 100%;
-                                         height: 0;
-                                         padding-bottom: 100%;
-                                         background-image: url(https://freesvg.org/img/abstract-user-flat-4.png);
-                                 background-position: center;
-                                 background-repeat: no-repeat;
-                                 background-size: cover;
-                                 ">
-                                    </div>
-                                    <div class="position-absolute" style=" top:0; left: 0; background-color: rgba(0, 0, 0, 0.3); display: none; width: 100%; height: 100%;">
-                                        <p class="text-light text-center" style=" overflow-wrap: break-word; font-weight: bold;">Click here to <br> change image</p>
-                                    </div>
-                                </label>
-
-                                <span class="font-weight-bold">@Model.Fullname</span>
-                                <span class="text-black-50">@Model.Email</span><span> </span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-8 border-right card" style=" border-radius: 15px; overflow: hidden;">
-                            <form asp-action="Profile">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <input type="hidden" asp-for="MemberId" />
-                                @Html.AntiForgeryToken()
-                                <div class="p-3 py-5 col-md-9">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h4 class="text-right">Edit Profile</h4>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="form-group">
-                                            <label asp-for="Fullname" class="control-label"></label>
-                                            <input asp-for="Fullname" class="form-control" />
-                                            <span asp-validation-for="Fullname" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Email" class="control-label"></label>
-                                            <input asp-for="Email" type="email" class="form-control" />
-                                            <span asp-validation-for="Email" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Phone" class="control-label"></label>
-                                            <input asp-for="Phone" type="tel" class="form-control" />
-                                            <span asp-validation-for="Phone" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Address" class="control-label"></label>
-                                            <input asp-for="Address" class="form-control" />
-                                            <span asp-validation-for="Address" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="City" class="control-label"></label>
-                                            <input asp-for="City" class="form-control" />
-                                            <span asp-validation-for="City" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Country" class="control-label"></label>
-                                            <input asp-for="Country" class="form-control" />
-                                            <span asp-validation-for="Country" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="Username" class="control-label"></label>
-                                            <input asp-for="Username" readonly class="form-control" />
-                                            <span asp-validation-for="Username" class="text-danger"></span>
-                                        </div>
-                                        <input asp-for="Password" class="form-control" type="hidden" value="@Model.Password" />
-                                        <input type="hidden" asp-for="Role" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input type="submit" value="Save" class="btn btn-primary" />
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>User Profile</h4>
+                    <div class="breadcrumb__links">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <span>Profile</span>
                     </div>
                 </div>
-            </section>
-
+            </div>
         </div>
-
-       
-
     </div>
-</div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<section class="profile">
+    <div class="container pt-5 pb-5">
+
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(ViewBag.Success))
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.Success
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-3">
+                <!-- Nav tabs -->
+                <div class="dashboard_tab_button">
+                    <ul class="nav flex-column dashboard-list">
+                        <li><a asp-controller="Member" asp-action="Profile" class="primary-btn">My Profile</a></li>
+                        <li> <a asp-controller="Order" asp-action="Index" class="primary-btn">Order</a></li>
+                        <li> <a asp-controller="Member" asp-action="ChangePassword" class="primary-btn">Change Password</a></li>
+                        <li><a asp-controller="Logout" asp-action="Index" class="primary-btn">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-9 col-lg-9">
+                <div class="dashboard_detail contact__form" id="account-details">
+                    <form asp-action="Profile">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="MemberId" />
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-lg-6">
+                            <label asp-for="Fullname"></label>
+                            <input asp-for="Fullname" />
+                            <span asp-validation-for="Fullname" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-6">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" type="email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-6">
+                            <label asp-for="Phone"></label>
+                            <input asp-for="Phone" type="tel" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-6">
+                            <label asp-for="Address"></label>
+                            <input asp-for="Address" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-6">
+                            <label asp-for="City"></label>
+                            <input asp-for="City" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-6">
+                            <label asp-for="Country"></label>
+                            <input asp-for="Country" />
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                            </div>
+                            <div class="col-lg-12">
+                            <label asp-for="Username"></label>
+                            <input asp-for="Username" readonly />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <input asp-for="Password" type="hidden" value="@Model.Password" />
+                        <input type="hidden" asp-for="Role" />
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="primary-btn"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     @{

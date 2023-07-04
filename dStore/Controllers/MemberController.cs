@@ -228,6 +228,7 @@ namespace eStore.Controllers
         {
             Request.Headers["Content-Type"] += ";charset=UTF-8";
             Response.Headers["Content-Type"] += ";charset=UTF-8";
+
             try
             {
                 string strMemberId = User.Claims.SingleOrDefault(c => c.Type.Equals("MemberId")).Value;
@@ -236,10 +237,25 @@ namespace eStore.Controllers
                 {
                     throw new Exception("Member ID is not matched!! Please try again");
                 }
+                Console.WriteLine(member.MemberId);
+                Console.WriteLine(member.Email);
+                Console.WriteLine(member.Phone);
+                Console.WriteLine(member.Address);
+                Console.WriteLine(member.City);
+                Console.WriteLine(member.Country);
+                Console.WriteLine(member.Fullname);
+                Console.WriteLine(member.Username);
+                Console.WriteLine(member.Password);
+                Console.WriteLine(member.Role);
                 if (ModelState.IsValid)
                 {
                     memberRepository.UpdateMember(member);
                     ViewBag.Success = "Update your Profile successfully!!";
+                }
+                else
+                {
+                    ViewBag.Error = "Update not successfully!!";
+                    throw new Exception("Update not successfully!!");
                 }
                 return View(member);
             }
