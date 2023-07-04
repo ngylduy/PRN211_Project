@@ -89,9 +89,9 @@
                                     {
                                         <span>Profile <i class="arrow_carrot-down"></i></span>
                                         <ul>
-                                            <li>My Profile</li>
-                                            <li>My Order</li>
-                                            <li>Change Password</li>
+                                            <li><a asp-controller="Member" asp-action="Profile">My Profile</a></li>
+                                            <li><a asp-controller="Order" asp-action="Index">My Order</a></li>
+                                            <li><a asp-controller="Member" asp-action="ChangePassword">Change Password</a></li>
                                         </ul>
                                     }
                                 </div>
@@ -231,8 +231,8 @@
     <div class="search-model">
         <div class="h-100 d-flex align-items-center justify-content-center">
             <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
+            <form class="search-model-form" asp-action="Index" asp-controller="Product" method="get">
+                <input id="search-input" name="search" value="@ViewBag.Search" type="text" placeholder="Search...">
             </form>
         </div>
     </div>

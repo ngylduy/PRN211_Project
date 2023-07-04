@@ -29,8 +29,8 @@
             <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <div class="shop__sidebar__search">
-                        <form action="#">
-                            <input type="text" placeholder="Search...">
+                        <form asp-action="Index" asp-controller="Product" method="get">
+                            <input id="search" name="search" value="@ViewBag.Search" type="text" placeholder="Search...">
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
@@ -44,15 +44,21 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__categories">
                                             <ul class="nice-scroll">
-                                                <li><a href="#">Men (20)</a></li>
-                                                <li><a href="#">Women (20)</a></li>
-                                                <li><a href="#">Bags (20)</a></li>
-                                                <li><a href="#">Clothing (20)</a></li>
-                                                <li><a href="#">Shoes (20)</a></li>
-                                                <li><a href="#">Accessories (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
-                                                <li><a href="#">Kids (20)</a></li>
+                                                @foreach (var item in ViewBag.Categories)
+                                                {
+                                                    @if (ViewBag.SelectedCate == item.CategoryId)
+                                                    {
+                                                        <li class="active">
+                                                            <a href="?category=@item.CategoryId">@item.CategoryName</a>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a href="?category=@item.CategoryId">@item.CategoryName</a>
+                                                        </li>
+                                                    }
+                                                }
                                             </ul>
                                         </div>
                                     </div>
@@ -66,12 +72,10 @@
                                     <div class="card-body">
                                         <div class="shop__sidebar__price">
                                             <ul>
-                                                <li><a href="#">$0.00 - $50.00</a></li>
-                                                <li><a href="#">$50.00 - $100.00</a></li>
-                                                <li><a href="#">$100.00 - $150.00</a></li>
-                                                <li><a href="#">$150.00 - $200.00</a></li>
-                                                <li><a href="#">$200.00 - $250.00</a></li>
-                                                <li><a href="#">250.00+</a></li>
+                                                <li><a href="?from=0&to=10">$0.00 - $10.00</a></li>
+                                                <li><a href="?from=10&to=50">$10.00 - $50.00</a></li>
+                                                <li><a href="?from=50&to=100">$50.00 - $100.00</a></li>
+                                                <li><a href="?from=100&to=150">$100.00 - $150.00</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -144,4 +148,3 @@
     </div>
 </section>
 <!-- Shop Section End -->
-

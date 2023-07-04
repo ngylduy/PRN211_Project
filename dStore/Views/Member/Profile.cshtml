@@ -54,7 +54,6 @@ else if (!string.IsNullOrEmpty(ViewBag.Success))
                             <form asp-action="Profile">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <input type="hidden" asp-for="MemberId" />
-
                                 @Html.AntiForgeryToken()
                                 <div class="p-3 py-5 col-md-9">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -68,13 +67,18 @@ else if (!string.IsNullOrEmpty(ViewBag.Success))
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="Email" class="control-label"></label>
-                                            <input asp-for="Email" class="form-control" />
+                                            <input asp-for="Email" type="email" class="form-control" />
                                             <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label asp-for="CompanyName" class="control-label"></label>
-                                            <input asp-for="CompanyName" class="form-control" />
-                                            <span asp-validation-for="CompanyName" class="text-danger"></span>
+                                            <label asp-for="Phone" class="control-label"></label>
+                                            <input asp-for="Phone" type="tel" class="form-control" />
+                                            <span asp-validation-for="Phone" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Address" class="control-label"></label>
+                                            <input asp-for="Address" class="form-control" />
+                                            <span asp-validation-for="Address" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="City" class="control-label"></label>
@@ -87,17 +91,12 @@ else if (!string.IsNullOrEmpty(ViewBag.Success))
                                             <span asp-validation-for="Country" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label asp-for="Password" class="control-label"></label>
-                                            <input asp-for="Password" class="form-control" type="password" value="@Model.Password" />
-                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                            <label asp-for="Username" class="control-label"></label>
+                                            <input asp-for="Username" readonly class="form-control" />
+                                            <span asp-validation-for="Username" class="text-danger"></span>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="Confirm" class="control-label">Confirm</label>
-                                            <input id="Confirm" name="Confirm" class="form-control" type="password" required value="@Model.Password" />
-                                        </div>
-                                        
-
+                                        <input asp-for="Password" class="form-control" type="hidden" value="@Model.Password" />
+                                        <input type="hidden" asp-for="Role" />
                                     </div>
 
                                     <div class="form-group">

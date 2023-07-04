@@ -186,6 +186,7 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
         public void Update(Member member)
         {
             if (member == null)
@@ -198,6 +199,7 @@ namespace DataAccess.DAO
                 if (_mem != null)
                 {
                     var context = new FStoreContext();
+                    member.Role = 1;
                     context.Members.Update(member);
                     context.SaveChanges();
                 }

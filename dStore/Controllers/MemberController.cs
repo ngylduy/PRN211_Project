@@ -212,7 +212,6 @@ namespace eStore.Controllers
             {
                 string strMemberId = User.Claims.SingleOrDefault(c => c.Type.Equals("MemberId")).Value;
                 Member member = memberRepository.GetMember(int.Parse(strMemberId));
-
                 return View(member);
             }
             catch (Exception ex)
@@ -225,7 +224,7 @@ namespace eStore.Controllers
         [Authorize(Roles = "User")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Profile(Member member, [FromForm] string confirm)
+        public IActionResult Profile(Member member)
         {
             Request.Headers["Content-Type"] += ";charset=UTF-8";
             Response.Headers["Content-Type"] += ";charset=UTF-8";
@@ -233,18 +232,12 @@ namespace eStore.Controllers
             {
                 string strMemberId = User.Claims.SingleOrDefault(c => c.Type.Equals("MemberId")).Value;
                 int id = int.Parse(strMemberId);
-
                 if (id != member.MemberId)
                 {
                     throw new Exception("Member ID is not matched!! Please try again");
                 }
                 if (ModelState.IsValid)
                 {
-                    if (!member.Password.Equals(confirm))
-                    {
-                        throw new Exception("Confirm and Password are not matched!!!");
-                    }
-
                     memberRepository.UpdateMember(member);
                     ViewBag.Success = "Update your Profile successfully!!";
                 }
