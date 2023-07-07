@@ -1,0 +1,165 @@
+@model PaginatedList<BusinessObject.Order>
+
+@{
+    ViewData["Title"] = "Order Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>My Order</h4>
+                    <div class="breadcrumb__links">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <a asp-controller="Product" asp-action="Index">Product</a>
+                        <span>Order</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<section class="order">
+    <div class="container pt-5 pb-5">
+        @if (TempData["Delete"] != null && !string.IsNullOrEmpty(TempData["Delete"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Delete"] } });
+        }
+        <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-3">
+                <!-- Nav tabs -->
+                <div class="dashboard_tab_button">
+                    <ul class="nav flex-column dashboard-list">
+                        <li><a asp-controller="Member" asp-action="Profile" class="primary-btn">My Profile</a></li>
+                        <li> <a asp-controller="Order" asp-action="Index" class="primary-btn">Order</a></li>
+                        <li> <a asp-controller="Member" asp-action="ChangePassword" class="primary-btn">Change Password</a></li>
+                        <li><a asp-controller="Logout" asp-action="Index" class="primary-btn">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-9 col-lg-9">
+                <div class="input__form mb-3">
+                    <form asp-action="Index" asp-controller="Order" method="get">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label for="start">Start Date</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input id="start" name="start" aria-describedby="dateHelp" value="@ViewBag.Start" type="date" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label for="end">End Date</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input id="end" name="end" value="@ViewBag.End" type="date" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="primary-btn">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                @if (ViewBag.Error != null)
+                {
+                    <div class="text-danger">
+                        @ViewBag.Error
+                    </div>
+                }
+                else
+                {
+                    @if (Model != null && Model.Any())
+                    {
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>
+                                        Order ID
+                                    </th>
+                                    <th>
+                                        Member Name
+                                    </th>
+                                    <th>
+                                        Ordered Date
+                                    </th>
+                                    <th>
+                                        Order Total
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OrderId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Member.Fullname)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.OrderDate)
+                                        </td>
+                                        <td>
+                                            @ViewData[item.OrderId.ToString()]
+                                        </td>
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                                        </td>
+                                        <td>
+                                            @if (item.Status == 0)
+                                            {
+                                                <span class="text-dark">Processing</span>
+                                            }
+                                            else if (item.Status == 1)
+                                            {
+                                                <span class="text-success">Delivery</span>
+                                            }
+                                            else if (item.Status == 2)
+                                            {
+                                                <span class="text-success">Successfully</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        // Phân trang
+                        <div>
+                            @{
+                                var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                            }
+                            <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" class="primary-btn @prevDisabled">Previous</a>
+                            <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" class="primary-btn @nextDisabled">Next</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-danger">No results found!!</div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>

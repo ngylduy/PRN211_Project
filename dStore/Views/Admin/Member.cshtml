@@ -1,0 +1,117 @@
+﻿@model PaginatedList<BusinessObject.Member>
+
+@{
+    ViewData["Title"] = "Member Management";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" asp-action="Create">+ Create New Member</a>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Member</h6>
+    </div>
+    <div class="card-body">
+
+        @if (TempData["Create"] != null && !string.IsNullOrEmpty(TempData["Create"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Create"] } });
+        }
+        @if (TempData["Update"] != null && !string.IsNullOrEmpty(TempData["Update"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Update"] } });
+        }
+        @if (TempData["Delete"] != null && !string.IsNullOrEmpty(TempData["Delete"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Delete"] } });
+        }
+
+        <form asp-action="Member" asp-controller="Admin" method="get">
+            <div class="input-group w-25" style="margin-bottom: 20px;">
+                <div class="form-outline" style="margin-right:10px">
+                    <input name="search" type="search" id="form1" class="form-control" placeholder="Search by Name..." value="@ViewBag.Search" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            @if (!Model.Any())
+            {
+                <div class="text-danger">No results found!!</div>
+            }
+            else
+            {
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Fullname</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Member ID</th>
+                            <th>Fullname</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.MemberId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Fullname)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                <td>@Html.DisplayFor(modelItem => item.City)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Country)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                                <td>
+                                    @if (item.Role != 0)
+                                    {
+                                        <a class="btn btn-danger btn-circle" asp-action="Delete" asp-route-id="@item.MemberId">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div>
+                    @{
+                        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                    }
+                    <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" class="btn btn-outline-primary @prevDisabled">Previous</a>
+                    <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" class="btn btn-outline-primary @nextDisabled">Next</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

@@ -510,3 +510,10 @@ D:\Data\Documents\GitHub\PRN211_Project\dStore\obj\Debug\net6.0\scopedcss\projec
 D:\Data\Documents\GitHub\PRN211_Project\dStore\obj\Debug\net6.0\dStore.csproj.CopyComplete
 D:\Data\Documents\GitHub\PRN211_Project\dStore\obj\Debug\net6.0\dStore.genruntimeconfig.cache
 D:\Data\Documents\GitHub\PRN211_Project\dStore\obj\Debug\net6.0\ref\dStore.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\ClosedXML.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\ExcelNumberFormat.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\Irony.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\SixLabors.Fonts.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\System.IO.Packaging.dll
+D:\Data\Documents\GitHub\PRN211_Project\dStore\bin\Debug\net6.0\XLParser.dll

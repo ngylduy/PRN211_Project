@@ -117,6 +117,14 @@ namespace DataAccess.DAO
             return product;
         }
 
+        public List<Product> GetRelatedProduct(int id)
+        {
+            var context = new FStoreContext();
+            var categoryId = context.Products.Find(id).CategoryId;
+            var product = context.Products.Where(x => x.CategoryId == categoryId && x.ProductId != id).Take(4).ToList();
+            return product;
+        }
+
         public int GetNextProductId()
         {
             int nextMemberId = -1;
@@ -284,5 +292,31 @@ namespace DataAccess.DAO
 
             return searchResult;
         }
+
+
+        public IEnumerable<Product> SortProduct(string typeSort, IEnumerable<Product> searchList)
+        {
+            IEnumerable<Product> searchResult = null;
+
+            try
+            {
+                if (typeSort.Equals("lowToHigh"))
+                {
+                    searchResult = searchList.OrderBy(pro => pro.UnitPrice);
+                }
+                else if (typeSort.Equals("highToLow"))
+                {
+                    searchResult = searchList.OrderByDescending(pro => pro.UnitPrice);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return searchResult;
+        }
+
     }
 }

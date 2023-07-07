@@ -1,4 +1,4 @@
-﻿@model BusinessObject.Product
+﻿@model ProductDetailViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -23,7 +23,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__pic__item">
-                                <img src="@Html.DisplayFor(model => model.Image)" alt="">
+                                <img src="@Html.DisplayFor(model => model.Product.Image)" alt="">
                             </div>
                         </div>
                     </div>
@@ -36,23 +36,23 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
                     <div class="product__details__text">
-                        <h4>@Html.DisplayFor(model => model.ProductName)</h4>
+                        <h4>@Html.DisplayFor(model => model.Product.ProductName)</h4>
 
-                        @if (Model.UnitsInStock > 0)
+                        @if (Model.Product.UnitsInStock > 0)
                         {
                             <div id="product-status">In stock</div>
                         } else
                         {
                             <div id="product-status">Out of stock</div>
                         }
-                        <h3>$@Html.DisplayFor(model => model.UnitPrice)</h3>
-                        <p>@Html.DisplayFor(model => model.Details)</p>
+                        <h3>$@Html.DisplayFor(model => model.Product.UnitPrice)</h3>
+                        <p>@Html.DisplayFor(model => model.Product.Details)</p>
                         <div class="product__details__cart__option">
                             <form asp-action="AddToCart" asp-controller="Cart" method="get">
-                                <input type="hidden" name="productId" id="productId" value="@Model.ProductId" />
+                                <input type="hidden" name="productId" id="productId" value="@Model.Product.ProductId" />
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="number" name="quantity" value="1" min="1" max="@Model.UnitsInStock">
+                                        <input type="number" name="quantity" value="1" min="1" max="@Model.Product.UnitsInStock">
                                     </div>
                                 </div>
                                 <input type="submit" class="primary-btn" value="Add To Cart" />
@@ -60,7 +60,7 @@
                         </div>
                         <div class="product__details__last__option">
                             <ul>
-                                <li><span>Categories:</span> @Html.DisplayFor(model => model.Category.CategoryName)</li>
+                                <li><span>Categories:</span> @Html.DisplayFor(model => model.Product.Category.CategoryName)</li>
                             </ul>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                                     <div class="product__details__tab__content__item">
                                         <h5>Products Infomation</h5>
                                         <p>
-                                            @Html.DisplayFor(model => model.Description)
+                                            @Html.DisplayFor(model => model.Product.Description)
                                         </p>
                                     </div>
                                 </div>
@@ -103,22 +103,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="http://localhost:5298/assets/img/product/product-1.jpg">
-                        <span class="label">New</span>
-                        <ul class="product__hover">
-                            <li><a href="#"><img src="~/assets/img/icon/search.png" alt=""></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6>Piqué Biker Jacket</h6>
-                        <a href="#" class="add-cart">+ Add To Cart</a>
-                        <h5>$67.24</h5>
+            @foreach (var relatedProduct in Model.RelatedProducts)
+            {
+                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="@relatedProduct.Image">
+                            <span class="label">Related</span>
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="~/assets/img/icon/search.png" alt=""></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6>@relatedProduct.ProductName</h6>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@relatedProduct.ProductId" class="add-cart">Product Detail</a>
+                            <h5>$@relatedProduct.UnitPrice</h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            }
         </div>
     </div>
 </section>

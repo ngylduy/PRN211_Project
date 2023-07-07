@@ -23,6 +23,11 @@ namespace DataAccess.Repository.ProductRepo
             return ProductDAO.Instance.GetProduct(productName, searchList);
         }
 
+        public List<Product> GetRelatedProduct(int id)
+        {
+            return ProductDAO.Instance.GetRelatedProduct(id);
+        }
+
         public IEnumerable<Product> GetProductsList(bool order = false)
         {
             return ProductDAO.Instance.GetProductsList(order);
@@ -43,6 +48,14 @@ namespace DataAccess.Repository.ProductRepo
             return ProductDAO.Instance.SearchProduct(startPrice, endPrice, searchList);
         }
 
+        public IEnumerable<Product> SortProduct(string name, IEnumerable<Product> searchList = null)
+        {
+            return ProductDAO.Instance.SortProduct(name, searchList);
+        }
+
         public void Update(Product product) => ProductDAO.Instance.Update(product);
+
+
+
     }
 }

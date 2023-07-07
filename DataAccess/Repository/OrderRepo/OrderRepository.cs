@@ -16,5 +16,7 @@ namespace DataAccess.Repository.OrderRepo
         public IEnumerable<Order> GetOrders(int memberId) => OrderDAO.Instance.GetOrders(memberId);
 
         public IEnumerable<Order> GetOrders(int memberId, DateTime startDate, DateTime endDate) => OrderDAO.Instance.GetOrders(memberId, startDate, endDate);
+
+        public void UpdateOrderStatus(int id, int status) => OrderDAO.Instance.Update(id, status);
     }
 }

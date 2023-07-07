@@ -93,11 +93,20 @@ textarea:focus {
     outline: none;
 }
 
+.table td, .table th {
+    vertical-align: middle!important;
+}
+
+a{
+    color: #111111;
+    display: inline-block;
+    position: relative;
+}
+
 a:hover,
 a:focus {
     text-decoration: none;
     outline: none;
-    color: #ffffff;
 }
 
 ul,
@@ -171,7 +180,15 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
     color: #ffffff;
     background: #000000;
     letter-spacing: 4px;
+    border: 0
 }
+    .primary-btn:hover{
+        color:#ffffff
+    }
+    .primary-btn.disabled {
+        pointer-events: none;
+        opacity: .65
+    }
 
 .site-btn {
     font-size: 14px;
@@ -319,7 +336,35 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
     -ms-flex-pack: center;
     justify-content: center;
 }
+/*---------------------
+  Instagram
+-----------------------*/
 
+.instagram__pic__item {
+    width: 33.33%;
+    float: left;
+    height: 261px;
+    background-position: center center;
+}
+
+.instagram__text {
+    padding-top: 130px;
+}
+
+    .instagram__text h2 {
+        color: #111111;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+
+    .instagram__text p {
+        margin-bottom: 65px;
+    }
+
+    .instagram__text h3 {
+        color: #e53637;
+        font-weight: 700;
+    }
 /*---------------------
   Header
 -----------------------*/
@@ -1222,7 +1267,7 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
 .shop__sidebar__categories ul,
 .shop__sidebar__price ul,
 .shop__sidebar__brand ul {
-    height: 225px;
+    max-height: 225px;
 }
 
     .shop__sidebar__categories ul li,
@@ -1413,10 +1458,11 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
     text-align: right;
 }
 
-    .shop__product__option__right p {
-        display: inline-block;
-        margin-bottom: 0;
-    }
+
+.shop__product__option__right form,.shop__product__option__right p {
+    display: inline-block;
+    margin-bottom: 0;
+}
 
     .shop__product__option__right .nice-select {
         float: none;
@@ -3296,7 +3342,7 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
         margin-bottom: 0;
     }
 
-.contact__form input {
+.input__form input, .contact__form input {
     height: 50px;
     width: 100%;
     border: 1px solid #e1e1e1;
@@ -3306,27 +3352,32 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
     margin-bottom: 30px;
 }
 
-    .contact__form input::-webkit-input-placeholder {
+    .input__form input{
+        padding: 10px;
+        margin: 0
+    }
+
+    .input__form input::-webkit-input-placeholder, .contact__form input::-webkit-input-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form input::-moz-placeholder {
+    .input__form input::-moz-placeholder, .contact__form input::-moz-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form input:-ms-input-placeholder {
+    .input__form input:-ms-input-placeholder, .contact__form input:-ms-input-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form input::-ms-input-placeholder {
+    .input__form input::-ms-input-placeholder, .contact__form input::-ms-input-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form input::placeholder {
+    .input__form input::placeholder, .contact__form input::placeholder {
         color: #b7b7b7;
     }
 
-.contact__form textarea {
+.input__form textarea, .contact__form textarea {
     height: 150px;
     width: 100%;
     border: 1px solid #e1e1e1;
@@ -3338,27 +3389,27 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
     resize: none;
 }
 
-    .contact__form textarea::-webkit-input-placeholder {
+    .input__form textarea::-webkit-input-placeholder, .contact__form textarea::-webkit-input-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form textarea::-moz-placeholder {
+    .input__form textarea::-moz-placeholder, .contact__form textarea::-moz-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form textarea:-ms-input-placeholder {
+    .input__form textarea:-ms-input-placeholder, .contact__form textarea:-ms-input-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form textarea::-ms-input-placeholder {
+    .input__form textarea::-ms-input-placeholder, .contact__form textarea::-ms-input-placeholder {
         color: #b7b7b7;
     }
 
-    .contact__form textarea::placeholder {
+    .input__form textarea::placeholder, .contact__form textarea::placeholder {
         color: #b7b7b7;
     }
 
-.contact__form button {
+.input__form button, .contact__form button {
     letter-spacing: 4px;
     padding: 14px 35px;
 }

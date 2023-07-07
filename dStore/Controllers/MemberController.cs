@@ -237,16 +237,6 @@ namespace eStore.Controllers
                 {
                     throw new Exception("Member ID is not matched!! Please try again");
                 }
-                Console.WriteLine(member.MemberId);
-                Console.WriteLine(member.Email);
-                Console.WriteLine(member.Phone);
-                Console.WriteLine(member.Address);
-                Console.WriteLine(member.City);
-                Console.WriteLine(member.Country);
-                Console.WriteLine(member.Fullname);
-                Console.WriteLine(member.Username);
-                Console.WriteLine(member.Password);
-                Console.WriteLine(member.Role);
                 if (ModelState.IsValid)
                 {
                     memberRepository.UpdateMember(member);
@@ -265,5 +255,50 @@ namespace eStore.Controllers
                 return View(member);
             }
         }
+
+        [Authorize(Roles = "User")]
+        public IActionResult changePassword()
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult changePassword(Password password)
+        {
+            Request.Headers["Content-Type"] += ";charset=UTF-8";
+            Response.Headers["Content-Type"] += ";charset=UTF-8";
+
+            string oldPassword = password.OldPassword;
+            string newPassword = password.NewPassword;
+            string confirmPassword = password.ConfirmPassword;
+
+            try
+            {
+                string strMemberId = User.Claims.SingleOrDefault(c => c.Type.Equals("MemberId")).Value;
+                Member member = memberRepository.GetMember(int.Parse(strMemberId));
+
+                if (!member.Password.Equals(oldPassword))
+                {
+                    throw new Exception("Old Password not pass!!!");
+                }
+                if (!newPassword.Equals(confirmPassword))
+                {
+                    throw new Exception("Confirm Password and New Password are not matched!!!");
+                }
+                member.Password = newPassword;
+                memberRepository.UpdateMember(member);
+                ViewBag.Success = "Password changed successfully!!";
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View();
+            }
+        }
+
     }
 }

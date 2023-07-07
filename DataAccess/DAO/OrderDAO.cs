@@ -144,5 +144,31 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public void Update(int id, int status)
+        {
+            try
+            {
+                Order _order = GetOrder(id);
+                if (_order != null)
+                {
+                    var context = new FStoreContext();
+                    _order.Status = status;
+                    context.Orders.Update(_order);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Order does not exist!!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+
     }
 }

@@ -1,0 +1,117 @@
+﻿@model BusinessObject.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Order Details</h4>
+                    <div class="breadcrumb__links">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                        <a asp-controller="Product" asp-action="Index">Product</a>
+                        <span>Order</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<section class="order">
+    <div class="container pt-5 pb-5">
+        @if (ViewBag.Error != null)
+        {
+            <div class="text-danger">
+                @ViewBag.Error
+            </div>
+            <div>
+                <a asp-action="Index">Back to List</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderId)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderId)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.OrderDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Member)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Member.Fullname)
+                    </dd>
+                    <dt class="col-sm-2">
+                        Order Total
+                    </dt>
+                    <dd class="col-sm-10">
+                        @ViewBag.OrderTotal
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <table class="table table-hover table-bordered table-striped">
+                    <thead class="table-primary">
+                        <tr>
+                            <th></th>
+                            <th>
+                                Product Name
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var orderDetails in Model.OrderDetails)
+                        {
+                            decimal price = Math.Round(orderDetails.UnitPrice, 2);
+                            <tr>
+                                <td style="width: 20%"><img style="height:150px" src="@orderDetails.Product.Image" /></td>
+                                <td>
+                                    @orderDetails.Product.ProductName
+                                </td>
+                                <td>
+                                    @orderDetails.Quantity
+                                </td>
+                                <td>
+                                    @price
+                                </td>
+                                <td>
+                                    @(price * orderDetails.Quantity)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.OrderId">Delete Order</a> |
+                <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
+            </div>
+        }
+    </div>
+</section>
