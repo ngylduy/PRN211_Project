@@ -212,6 +212,26 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public void DeleteByCategory(int categoryId)
+        {
+            try
+            {
+                var context = new FStoreContext();
+                IEnumerable<Product> products = context.Products.Where(od => od.CategoryId == categoryId);
+
+                foreach (var product in products)
+                {
+                    context.Remove(product);
+                }
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public IEnumerable<Product> SearchProduct(string name, IEnumerable<Product> searchList)
         {
             IEnumerable<Product> searchResult = null;

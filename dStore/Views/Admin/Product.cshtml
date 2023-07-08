@@ -125,8 +125,10 @@
                                     <td>@Html.DisplayFor(modelItem => item.UnitsInStock)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Details)</td>
                                     <td>
-                                        <a class="btn btn-info" asp-action="EditProduct" asp-route-id="@item.ProductId">Edit</a> @Html.Raw("&verbar;")
-                                        <a class="btn btn-danger" href="#!" data-toggle="modal" data-target="#productModal" data-url="@Url.Action("DeleteProductPopup", "Admin", new { id = item.ProductId })">Delete</a>
+                                        <a class="btn btn-info btn-circle" asp-action="EditProduct" asp-route-id="@item.ProductId"><i class="fas fa-edit"></i></a> @Html.Raw("&verbar;")
+                                        <a class="btn btn-danger btn-circle" href="#!" data-toggle="modal" data-target="#productModal" data-url="@Url.Action("DeleteProductPopup", "Admin", new { id = item.ProductId })">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             }

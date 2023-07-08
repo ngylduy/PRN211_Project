@@ -55,7 +55,6 @@ namespace DataAccess.Repository.ProductRepo
 
         public void Update(Product product) => ProductDAO.Instance.Update(product);
 
-
-
+        public void DeleteByCategory(int categoryId) => ProductDAO.Instance.DeleteByCategory(categoryId);
     }
 }

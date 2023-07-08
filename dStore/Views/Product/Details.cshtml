@@ -80,7 +80,7 @@
                                 <div class="product__details__tab__content">
                                     <div class="product__details__tab__content__item">
                                         <h5>Products Infomation</h5>
-                                        @Model.Product.Description
+                                        @Html.Raw(System.Web.HttpUtility.HtmlDecode(Model.Product.Description))
                                     </div>
                                 </div>
                             </div>

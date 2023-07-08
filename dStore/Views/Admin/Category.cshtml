@@ -1,0 +1,97 @@
+﻿@model IEnumerable<BusinessObject.Category>
+
+@{
+    ViewData["Title"] = "Category Management";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#categoryModals" data-url="@Url.Action("CreateCategoryPopup", "Admin")">
+        + Create New Category
+    </a>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Category</h6>
+    </div>
+    <div class="card-body">
+
+        @if (TempData["Create"] != null && !string.IsNullOrEmpty(TempData["Create"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Create"] } });
+        }
+        @if (TempData["Update"] != null && !string.IsNullOrEmpty(TempData["Update"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Update"] } });
+        }
+        @if (TempData["Delete"] != null && !string.IsNullOrEmpty(TempData["Delete"].ToString()))
+        {
+            await Html.RenderPartialAsync("Alert", new ViewDataDictionary(ViewData) { { "role", "success" }, { "message", TempData["Delete"] } });
+        }
+        @if (!Model.Any())
+        {
+            <div class="text-danger">No results found!!</div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Category ID</th>
+                            <th>Category Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.CategoryId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                                <td>
+                                    <a class="btn btn-info btn-circle" data-toggle="modal" data-target="#categoryModals" data-url="@Url.Action("EditCategoryPopup", "Admin", new { id = item.CategoryId })">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    @Html.Raw("&verbar;")
+                                    <a class="btn btn-danger btn-circle" data-toggle="modal" data-target="#categoryModals" data-url="@Url.Action("DeleteCategoryPopup", "Admin", new { id = item.CategoryId })">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="categoryModals" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        window.addEventListener('load', function () {
+            $('a[data-toggle="modal"]').on('click', function () {
+                var url = $(this).data('url');
+                $.get(url, function (data) {
+                    $('#categoryModals .modal-content').html(data);
+                });
+            });
+        });
+    </script>
+}

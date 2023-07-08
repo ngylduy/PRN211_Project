@@ -7941,6 +7941,10 @@
       "PackagePath": "staticwebassets\\images\\7ef6bc33-4e45-414d-b716-38c3d24083d2_357777178_765914615233262_3763113076428366308_n.jpg"
     },
     {
+      "Id": "D:\\Data\\Documents\\GitHub\\PRN211_Project\\dStore\\wwwroot\\images\\d7f1d6c9-0609-421a-be9e-789a19a72500_204490312-1-white.png",
+      "PackagePath": "staticwebassets\\images\\d7f1d6c9-0609-421a-be9e-789a19a72500_204490312-1-white.png"
+    },
+    {
       "Id": "D:\\Data\\Documents\\GitHub\\PRN211_Project\\dStore\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

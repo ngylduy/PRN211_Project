@@ -12,6 +12,7 @@ namespace DataAccess.Repository.ProductRepo
         public void AddProduct(Product product);
         public void Update(Product product);
         public void Delete(int productId);
+        public void DeleteByCategory(int categoryId);
         public IEnumerable<Product> SearchProduct(string name, IEnumerable<Product> searchList = null);
         public IEnumerable<Product> SearchProduct(int startUnit, int endUnit, IEnumerable<Product> searchList = null);
         public IEnumerable<Product> SearchProduct(decimal startPrice, decimal endPrice, IEnumerable<Product> searchList = null);

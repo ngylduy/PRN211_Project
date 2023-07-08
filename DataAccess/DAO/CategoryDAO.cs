@@ -97,5 +97,53 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+        public void Update(Category category)
+        {
+            if (category == null)
+            {
+                throw new Exception("Category is undefined!!");
+            }
+            try
+            {
+                Category _cat = GetCategory(category.CategoryId);
+                if (_cat != null)
+                {
+                    var context = new FStoreContext();
+                    context.Categories.Update(category);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Category does not exist!!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+        public void Delete(int id)
+        {
+            try
+            {
+                Category category = GetCategory(id);
+                if (category != null)
+                {
+                    var context = new FStoreContext();
+                    context.Categories.Remove(category);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Category does not exist!!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

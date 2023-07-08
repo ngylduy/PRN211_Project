@@ -8,5 +8,7 @@ namespace DataAccess.Repository.CategoryRepo
         public Category GetCategory(int categoryId);
         public Category GetCategory(string categoryName);
         public void AddCategory(string categoryName);
+        public void DeleteCategory(int categoryId);
+        public void Update(Category category);
     }
 }

@@ -20,6 +20,7 @@ namespace dStore.Controllers
         private IOrderRepository orderRepository;
         private IOrderDetailRepository orderDetailRepository;
         private IWebHostEnvironment _webHostEnvironment;
+        private ICategoryRepository categoryRepository;
 
         public AdminController(IWebHostEnvironment webHostEnvironment)
         {
@@ -29,6 +30,7 @@ namespace dStore.Controllers
             orderRepository = new OrderRepository();
             orderDetailRepository = new OrderDetailRepository();
             _webHostEnvironment = webHostEnvironment;
+            categoryRepository = new CategoryRepository();
         }
 
         [Authorize(Roles = "Admin")]
@@ -218,7 +220,6 @@ namespace dStore.Controllers
         {
             try
             {
-                ICategoryRepository categoryRepository = new CategoryRepository();
                 IEnumerable<Category> categories = categoryRepository.GetCategoryList();
                 var categoriesList = new SelectList(categories.ToDictionary(cate => cate.CategoryId, cate => cate.CategoryName), "Key", "Value");
                 ViewBag.Category = categoriesList;
@@ -360,6 +361,93 @@ namespace dStore.Controllers
         #endregion
 
         #region Category Management
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Category()
+        {
+            IEnumerable<Category> categories = categoryRepository.GetCategoryList();
+            return View(categories);
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult CreateCategoryPopup()
+        {
+            return PartialView("_CreateCategoryPopup");
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult CreateCategory(string categoryName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(categoryName))
+                {
+                    categoryRepository.AddCategory(categoryName);
+                }
+                else
+                {
+                    throw new Exception("The Category Name is empty!!");
+                }
+                ViewBag.OK = "Create Category successfully!";
+                return RedirectToAction(nameof(Category));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Can not create new category!";
+                return RedirectToAction(nameof(Category));
+            }
+
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteCategoryPopup(int? id)
+        {
+            Category category = categoryRepository.GetCategory(id.Value);
+            if (category == null)
+            {
+                throw new Exception("Product ID is not found!!!");
+            }
+            return PartialView("_DeleteCategoryPopup", category);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult DeleteCategory(int? id)
+        {
+            Category category = categoryRepository.GetCategory(id.Value);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            productRepository.DeleteByCategory(id.Value);
+            categoryRepository.DeleteCategory(id.Value);
+            TempData["Delete"] = "Delete Category with the ID <strong>" + id + "</strong> successfully!!";
+            return RedirectToAction("Category");
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditCategoryPopup(int? id)
+        {
+            Category category = categoryRepository.GetCategory(id.Value);
+            if (category == null)
+            {
+                throw new Exception("Product ID is not found!!!");
+            }
+            return PartialView("_EditCategoryPopup", category);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditCategory(int id, Category category)
+        {
+            if (id != category.CategoryId)
+            {
+                throw new Exception("Category ID is not matched!! Please try again");
+            }
+            if (ModelState.IsValid)
+            {
+                categoryRepository.Update(category);
+                TempData["Update"] = "Update Category with the ID <strong>" + id + "</strong> successfully!!";
+            }
+            return RedirectToAction("Category");
+        }
+
         #endregion
     }
 }
