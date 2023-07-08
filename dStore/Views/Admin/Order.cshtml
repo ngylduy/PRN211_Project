@@ -137,13 +137,19 @@
         </div>
     </div>
 </div>
-<script>
-    window.addEventListener('load', function () {
-        $('a[data-toggle="modal"]').on('click', function () {
-            var url = $(this).data('url');
-            $.get(url, function (data) {
-                $('#orderDetailsModals .modal-content').html(data);
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        window.addEventListener('load', function () {
+            $('a[data-toggle="modal"]').on('click', function () {
+                var url = $(this).data('url');
+                $.get(url, function (data) {
+                    $('#orderDetailsModals .modal-content').html(data);
+                });
             });
         });
-    });
-</script>
+    </script>
+}

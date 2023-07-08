@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
-namespace eStore.Controllers
+namespace dStore.Controllers
 {
     class OrderExportData
     {

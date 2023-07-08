@@ -8,7 +8,7 @@
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
-    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" asp-action="Create">+ Create New Product</a>
+    <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" asp-action="CreateProduct">+ Create New Product</a>
 </div>
 
 <!-- DataTales Example -->
@@ -125,8 +125,8 @@
                                     <td>@Html.DisplayFor(modelItem => item.UnitsInStock)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Details)</td>
                                     <td>
-                                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> @Html.Raw("&verbar;")
-                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                                        <a class="btn btn-info" asp-action="EditProduct" asp-route-id="@item.ProductId">Edit</a> @Html.Raw("&verbar;")
+                                        <a class="btn btn-danger" href="#!" data-toggle="modal" data-target="#productModal" data-url="@Url.Action("DeleteProductPopup", "Admin", new { id = item.ProductId })">Delete</a>
                                     </td>
                                 </tr>
                             }
@@ -145,3 +145,26 @@
         }
     </div>
 </div>
+
+<div id="productModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        window.addEventListener('load', function () {
+            $('a[data-toggle="modal"]').on('click', function () {
+                var url = $(this).data('url');
+                $.get(url, function (data) {
+                    $('#productModal .modal-content').html(data);
+                });
+            });
+        });
+    </script>
+}

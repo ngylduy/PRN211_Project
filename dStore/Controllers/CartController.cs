@@ -7,7 +7,7 @@ using dStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eStore.Controllers
+namespace dStore.Controllers
 {
     public class CartController : Controller
     {

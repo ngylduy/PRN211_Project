@@ -1,12 +1,13 @@
 ﻿using BusinessObject;
+using DataAccess.Repository.CategoryRepo;
 using DataAccess.Repository.MemberRepo;
 using DataAccess.Repository.OrderDetailRepo;
 using DataAccess.Repository.OrderRepo;
 using DataAccess.Repository.ProductRepo;
 using dStore.Models;
-using eStore.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace dStore.Controllers
 {
@@ -18,16 +19,25 @@ namespace dStore.Controllers
         private FStoreContext context;
         private IOrderRepository orderRepository;
         private IOrderDetailRepository orderDetailRepository;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public AdminController()
+        public AdminController(IWebHostEnvironment webHostEnvironment)
         {
             memberRepository = new MemberRepository();
             productRepository = new ProductRepository();
             context = new FStoreContext();
             orderRepository = new OrderRepository();
             orderDetailRepository = new OrderDetailRepository();
+            _webHostEnvironment = webHostEnvironment;
         }
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        #region Order Management
         public async Task<IActionResult> Order(DateTime? start, DateTime? end, int? page)
         {
             try
@@ -89,12 +99,35 @@ namespace dStore.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Index()
+        public ActionResult OrderDetailsPopup(int id)
         {
-            return View();
+            Order order = orderRepository.GetOrder(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.OrderDetails = orderDetailRepository.GetOrderDetails(order.OrderId).ToList();
+            decimal orderTotal = orderDetailRepository.GetOrderTotal(order.OrderId);
+            ViewBag.OrderTotal = orderTotal;
+
+            return PartialView("_OrderDetailsPopup", order);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult UpdateOrderStatus(int id, int status)
+        {
+            Order order = orderRepository.GetOrder(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            orderRepository.UpdateOrderStatus(id, status);
+            return RedirectToAction("Order");
+        }
+        #endregion
+
+        #region Member Management
         [Authorize(Roles = "Admin")]
         // GET: MemberController
         public async Task<IActionResult> Member(string search, int? page)
@@ -115,7 +148,9 @@ namespace dStore.Controllers
 
             return View(await PaginatedList<Member>.CreateAsync(members.AsQueryable(), page ?? 1, pageSize));
         }
+        #endregion
 
+        #region Product Management
         [Authorize(Roles = "Admin")]
         // GET: ProductController
         public async Task<IActionResult> Product(string search, string? sort, decimal? from, decimal? to, int? page, int category = 0)
@@ -140,9 +175,6 @@ namespace dStore.Controllers
                     products = productRepository.GetProductsList().Where(p => p.CategoryId == category).OrderByDescending(pro => pro.ProductName);
                 }
                 else
-                {
-
-                }
                 {
                     products = productRepository.GetProductsList().OrderByDescending(pro => pro.ProductName);
                 }
@@ -181,32 +213,153 @@ namespace dStore.Controllers
 
         }
 
-        public ActionResult OrderDetailsPopup(int id)
-        {
-            Order order = orderRepository.GetOrder(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            order.OrderDetails = orderDetailRepository.GetOrderDetails(order.OrderId).ToList();
-            decimal orderTotal = orderDetailRepository.GetOrderTotal(order.OrderId);
-            ViewBag.OrderTotal = orderTotal;
 
-            return PartialView("_OrderDetailsPopup", order);
+        public ActionResult CreateProduct()
+        {
+            try
+            {
+                ICategoryRepository categoryRepository = new CategoryRepository();
+                IEnumerable<Category> categories = categoryRepository.GetCategoryList();
+                var categoriesList = new SelectList(categories.ToDictionary(cate => cate.CategoryId, cate => cate.CategoryName), "Key", "Value");
+                ViewBag.Category = categoriesList;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View();
+            }
+            return View();
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult UpdateOrderStatus(int id, int status)
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateProduct(Product product, IFormFile fileAnh)
         {
-            Order order = orderRepository.GetOrder(id);
-            if (order == null)
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (fileAnh != null && fileAnh.Length > 0)
+                    {
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + System.IO.Path.GetFileName(fileAnh.FileName);
+                        string imagePath = System.IO.Path.Combine(_webHostEnvironment.WebRootPath, "images", uniqueFileName);
+                        using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                        {
+                            fileAnh.CopyTo(fileStream);
+                        }
+                        product.Image = "/images/" + uniqueFileName;
+                    }
+                    else
+                    {
+                        throw new Exception("Image product is not empty!");
+                    }
+                    TempData["Create"] = "Create Product successfully!!";
+                    productRepository.AddProduct(product);
+                }
+                return RedirectToAction(nameof(Product));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.InnerException?.Message ?? ex.Message;
+                return View(product);
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditProduct(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    throw new Exception("Product ID is not found!!!");
+                }
+                Product product = productRepository.GetProduct(id.Value);
+                if (product == null)
+                {
+                    throw new Exception("Product ID is not found!!!");
+                }
+
+                ICategoryRepository categoryRepository = new CategoryRepository();
+                IEnumerable<Category> categories = categoryRepository.GetCategoryList();
+                var categoriesList = new SelectList(categories.ToDictionary(cate => cate.CategoryId, cate => cate.CategoryName), "Key", "Value");
+                ViewBag.Category = categoriesList;
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View();
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProduct(int? id, Product product, IFormFile fileAnh)
+        {
+            try
+            {
+                Product oProduct = productRepository.GetProduct(id.Value);
+                if (oProduct == null)
+                {
+                    throw new Exception("Product ID is not found!! Please try again");
+                }
+                if (fileAnh != null && fileAnh.Length > 0)
+                {
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + System.IO.Path.GetFileName(fileAnh.FileName);
+                    string imagePath = System.IO.Path.Combine(_webHostEnvironment.WebRootPath, "images", uniqueFileName);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        fileAnh.CopyTo(fileStream);
+                    }
+                    product.Image = "/images/" + uniqueFileName;
+                }
+                else
+                {
+                    product.Image = oProduct.Image;
+                }
+                productRepository.Update(product);
+                TempData["Update"] = "Update Product with the ID <strong>" + id + "</strong> successfully!!";
+                return RedirectToAction(nameof(Product));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View(product);
+            }
+        }
+
+        public ActionResult DeleteProductPopup(int? id)
+        {
+            Product product = productRepository.GetProduct(id.Value);
+            if (product == null)
+            {
+                throw new Exception("Product ID is not found!!!");
+            }
+            return PartialView("_DeleteProductPopup", product);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteProduct(int id)
+        {
+            Product product = productRepository.GetProduct(id);
+            if (product == null)
             {
                 return NotFound();
             }
-            orderRepository.UpdateOrderStatus(id, status);
-            return RedirectToAction("Order");
-        }
+            IOrderDetailRepository orderDetailRepository = new OrderDetailRepository();
+            orderDetailRepository.DeleteByProduct(id);
+            productRepository.Delete(id);
+            TempData["Delete"] = "Delete Product with the ID <strong>" + id + "</strong> successfully!!";
+            return RedirectToAction("Product");
 
+        }
+        #endregion
+
+        #region Category Management
+        #endregion
     }
 }

@@ -44,7 +44,6 @@ namespace BusinessObject
         [Display(Name = "Details")]
         public string Details { get; set; }
 
-        [Required]
         [Display(Name = "Image")]
         public string Image { get; set; }
 

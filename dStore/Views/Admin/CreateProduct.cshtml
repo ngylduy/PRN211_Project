@@ -2,11 +2,9 @@
 
 @{
     ViewData["Title"] = "Create Product";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Admin.cshtml";
 }
-<h1>Create a new Product</h1>
 
-<hr />
 
 @if (ViewBag.Error != null)
 {
@@ -16,18 +14,27 @@
 }
 else
 {
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-2 text-gray-800">@ViewData["Title"]</h1>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Product</h6>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateProduct" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="CategoryId" class="control-label"></label>
                     <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Category"></select>
                     <small class="text-muted form-text">
-                        <a class="btn btn-sm btn-outline-info" asp-action="Create" asp-controller="Category" data-toggle="modal" data-target="#createCategory">
+                        <a class="btn btn-sm btn-outline-info" asp-action="Category">
                             + Create new Category
                         </a>
-                        </small>
+                    </small>
                 </div>
                 <div class="form-group">
                     <label asp-for="ProductName" class="control-label"></label>
@@ -50,49 +57,48 @@ else
                     <span asp-validation-for="UnitsInStock" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <label asp-for="Details" class="control-label"></label>
+                    <textarea asp-for="Details" type="file" class="form-control"></textarea>
+                    <span asp-validation-for="Details" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" id="productDescription" type="file" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Photo</label>
+                    <input name="fileAnh" type="file" accept=".jpg, .jpeg, .png" onchange="document.getElementById('imagePrv').src = window.URL.createObjectURL(this.files[0])" />
+                    <img id="imagePrv" src="" width="300" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
-
-    <div>
-        <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="createCategory" tabindex="-1" role="dialog" aria-labelledby="createCategoryLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create new Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="categoryName">Category Name:</label>
-                            <input type="text" class="form-control" placeholder="Enter new Category name..." name="categoryName" id="categoryName" />
-                        </div>
-                        <div id="categoryError" class="text-danger" hidden>
-                        </div>
-                        <div id="categorySuccess" class="text-success" hidden>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnCreateCategory">Create</button>
-                </div>
-            </div>
-        </div>
-    </div>
 }
 @section Scripts {
-<script src="~/js/createCategory.js"></script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#productDescription',
+            branding: !1,
+            menubar: "file edit view insert format tools table custom",
+            plugins: "link image preview codesample table toc wordcount code lists insertdatetime emoticons visualblocks autoresize",
+            toolbar: "formatselect | bold italic underline strikethrough superscript subscript blockquote | link image | alignleft aligncenter alignright alignjustify bullist numlist | table toc | codesample preview insertdatetime emoticons visualblocks code",
+            toolbar_sticky: !0,
+            toolbar_sticky_offset: 64,
+            toc_class: "elcTOC",
+            toc_depth: 6,
+            content_css: "http://127.0.0.1:5500/plugins/auth/styles/tinymce.css",
+            content_css_cors: !0,
+            extended_valid_elements: "img[src|loading=lazy|alt|title|width|height|align|onmouseover|onmouseout|name]",
+            insertdatetime_formats: ["Updated: %A, %d %B %Y"]
+        });
+    </script>
 }
 
