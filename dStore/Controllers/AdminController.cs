@@ -150,6 +150,28 @@ namespace dStore.Controllers
 
             return View(await PaginatedList<Member>.CreateAsync(members.AsQueryable(), page ?? 1, pageSize));
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IActionResult UpdateStatusMember(int id, int status)
+        {
+            Member member = memberRepository.GetMember(id);
+            if (member == null)
+            {
+                throw new Exception("Member ID is not exit! Please try again");
+            }
+            memberRepository.UpdateMemberStatus(id, status);
+            if (status == 1)
+            {
+                TempData["Update"] = "Unban member with ID <strong>" + id + "</strong> successfully!!";
+            }
+            else
+            {
+                TempData["Update"] = "Baned member with ID <strong>" + id + "</strong> successfully!!";
+            }
+            return RedirectToAction("Member");
+        }
+
         #endregion
 
         #region Product Management

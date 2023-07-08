@@ -47,5 +47,7 @@ namespace DataAccess.Repository.MemberRepo
         }
 
         public Member GetMember(string memberEmail) => MemberDAO.Instance.GetMember(memberEmail);
+
+        public void UpdateMemberStatus(int id, int status) => MemberDAO.Instance.UpdateStatus(id, status);
     }
 }

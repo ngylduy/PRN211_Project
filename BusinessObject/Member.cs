@@ -54,11 +54,9 @@ namespace BusinessObject
         public string Password { get; set; }
 
         [Display(Name = "Role")]
-        [Required]
         public int Role { get; set; }
 
         [Display(Name = "Status")]
-        [Required]
         public int Status { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

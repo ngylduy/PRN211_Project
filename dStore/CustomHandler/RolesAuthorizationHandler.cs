@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace eStore.CustomHandler
 {
@@ -22,21 +18,23 @@ namespace eStore.CustomHandler
             if (requirement.AllowedRoles == null || !requirement.AllowedRoles.Any())
             {
                 validRole = false;
-            } else
+            }
+            else
             {
                 var claims = context.User.Claims;
-                var name = claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Name));
-
-                if (name != null)
+                var role = claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Role));
+                if (role != null)
                 {
                     var roles = requirement.AllowedRoles;
-                    if (name.Value.Equals("Admin") && roles.Contains(name.Value))
+                    if (role.Value.Equals("Admin") && roles.Contains(role.Value))
                     {
                         validRole = true;
-                    } else if (!name.Value.Equals("Admin") && roles.Contains("User"))
+                    }
+                    else if (!role.Value.Equals("Admin") && roles.Contains("User"))
                     {
                         validRole = true;
-                    } else 
+                    }
+                    else
                     {
                         validRole = false;
                     }
@@ -46,7 +44,8 @@ namespace eStore.CustomHandler
             if (validRole)
             {
                 context.Succeed(requirement);
-            } else
+            }
+            else
             {
                 context.Fail();
             }

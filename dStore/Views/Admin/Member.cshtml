@@ -60,6 +60,7 @@
                             <th>City</th>
                             <th>Country</th>
                             <th>Username</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -78,11 +79,37 @@
                                 <td>@Html.DisplayFor(modelItem => item.Country)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Username)</td>
                                 <td>
+                                    @if (item.Status == 1)
+                                    {
+                                        <span class="text-success">Active</span>
+                                    } else
+                                    {
+                                        <span class="text-error">Banned</span>
+                                    }
+                                </td>
+                                <td>
                                     @if (item.Role != 0)
                                     {
-                                        <a class="btn btn-danger btn-circle" asp-action="Delete" asp-route-id="@item.MemberId">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        @if (item.Status == 1)
+                                        {
+                                            <form asp-action="UpdateStatusMember">
+                                                <input hidden name="id" type="number" value="@item.MemberId">
+                                                <input hidden name="status" type="number" value="0">
+                                                <button type="submit" class="btn btn-danger btn-circle">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <form asp-action="UpdateStatusMember">
+                                                <input hidden name="id" type="number" value="@item.MemberId">
+                                                <input hidden name="status" type="number" value="1">
+                                                <button type="submit" class="btn btn-success btn-circle">
+                                                    <i class="fas fa-undo"></i>
+                                                </button>
+                                            </form>
+                                        }
                                     }
                                 </td>
                             </tr>

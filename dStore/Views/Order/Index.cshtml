@@ -122,8 +122,12 @@
                                             @ViewData[item.OrderId.ToString()]
                                         </td>
                                         <td>
-                                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                                            <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a>
+                                            @if (item.Status == 0)
+                                            {
+                                                <span> | </span>
+                                                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                                            }
                                         </td>
                                         <td>
                                             @if (item.Status == 0)

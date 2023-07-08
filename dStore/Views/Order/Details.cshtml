@@ -109,7 +109,11 @@
                 </table>
             </div>
             <div>
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.OrderId">Delete Order</a> |
+                @if (Model.Status == 0)
+                {
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.OrderId">Delete Order</a>
+                    <span>|</span>
+                }
                 <a class="btn btn-outline-dark" asp-action="Index">Back to List</a>
             </div>
         }

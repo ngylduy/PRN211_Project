@@ -9,6 +9,7 @@ namespace DataAccess.Repository.MemberRepo
         public Member Login(string username, string password);
         public void AddMember(Member member);
         public void UpdateMember(Member member);
+        public void UpdateMemberStatus(int id, int status);
         public void DeleteMember(int MemberID);
         public Member GetMember(int memberId);
         public Member GetMember(string memberEmail);

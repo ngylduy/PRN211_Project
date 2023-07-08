@@ -23,7 +23,11 @@ namespace dStore.Controllers
             {
                 IMemberRepository memberRepository = new MemberRepository();
                 Member loginMember = memberRepository.Login(username, password);
-                if (loginMember != null)
+                if (loginMember.Status == 0)
+                {
+                    throw new Exception("Member has been banned please contact admin!");
+                }
+                if (loginMember != null && loginMember.Status == 1)
                 {
                     var memberClaims = new List<Claim>()
                     {

@@ -49,7 +49,8 @@ namespace DataAccess.DAO
                     City = "",
                     Country = "",
                     Fullname = "Admin",
-                    Role = 0
+                    Role = 0,
+                    Status = 1
                 };
             }
             return Default;
@@ -173,6 +174,7 @@ namespace DataAccess.DAO
                 {
                     var context = new FStoreContext();
                     member.Role = 1;
+                    member.Status = 1;
                     context.Members.Add(member);
                     context.SaveChanges();
                 }
@@ -200,6 +202,7 @@ namespace DataAccess.DAO
                 {
                     var context = new FStoreContext();
                     member.Role = 1;
+                    member.Status = 1;
                     context.Members.Update(member);
                     context.SaveChanges();
                 }
@@ -212,8 +215,30 @@ namespace DataAccess.DAO
             {
                 throw new Exception(ex.Message);
             }
-
         }
+        public void UpdateStatus(int id, int status)
+        {
+            try
+            {
+                Member _mem = GetMember(id);
+                if (_mem != null)
+                {
+                    var context = new FStoreContext();
+                    _mem.Status = status;
+                    context.Members.Update(_mem);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Member does not exist!!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public void Delete(int MemberId)
         {
             try
