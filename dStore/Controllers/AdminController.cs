@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using DataAccess.Repository.CategoryRepo;
+using DataAccess.Repository.DashboardRepo;
 using DataAccess.Repository.MemberRepo;
 using DataAccess.Repository.OrderDetailRepo;
 using DataAccess.Repository.OrderRepo;
@@ -21,6 +22,7 @@ namespace dStore.Controllers
         private IOrderDetailRepository orderDetailRepository;
         private IWebHostEnvironment _webHostEnvironment;
         private ICategoryRepository categoryRepository;
+        private IDashboardRepository dashboardRepository;
 
         public AdminController(IWebHostEnvironment webHostEnvironment)
         {
@@ -31,12 +33,21 @@ namespace dStore.Controllers
             orderDetailRepository = new OrderDetailRepository();
             _webHostEnvironment = webHostEnvironment;
             categoryRepository = new CategoryRepository();
+            dashboardRepository = new DashboardRepository();
         }
 
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new DashboardViewModel
+            {
+                TotalProducts = dashboardRepository.getTotalProduct(),
+                TotalRevenue = dashboardRepository.getTotalRevenue(),
+                TotalRevenueByMonth = dashboardRepository.getTotalRevenueByMonth(),
+                TotalPendingOrders = dashboardRepository.getTotalPendingOrder()
+            };
+
+            return View(viewModel);
         }
 
         #region Order Management

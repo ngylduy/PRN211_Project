@@ -1936,15 +1936,18 @@ input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner
         margin-bottom: 0;
     }
 
-    .product__details__tab__content__item h5 {
+    .product__details__tab__content__item h1, .product__details__tab__content__item h2, .product__details__tab__content__item h5 {
         color: #111111;
         font-size: 20px;
         font-weight: 700;
-        margin-bottom: 12px;
+        margin-bottom: 0.9375rem;
     }
-
+    .product__details__tab__content__item img {
+        width:100%;
+        height:auto
+    }
     .product__details__tab__content__item p {
-        margin-bottom: 0;
+        margin-bottom: 0.9375rem;
     }
 
 /*---------------------
